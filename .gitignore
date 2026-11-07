@@ -1,0 +1,21 @@
+﻿# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Temporary Office lock files
+~$*.docx
+~$*.xlsx
+~$*.pptx
+
+# Editor and IDE directories
+.vscode/
+.idea/
+*.swp
+*~
+
+# Log files
+*.log
+

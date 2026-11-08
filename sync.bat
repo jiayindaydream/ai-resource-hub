@@ -34,14 +34,15 @@ if %ERRORLEVEL% equ 0 (
 
 echo.
 echo [3/3] 正在推送到云端仓库 (git push)...
-git push
+:: 优先尝试带 upstream 推送，确保首次推送和日常推送均可成功
+git push -u origin main
 if %ERRORLEVEL% neq 0 (
     echo.
     echo ========================================================
-    echo [提示] 推送未成功或尚未关联远程仓库！
-    echo 如果您是第一次使用，请先在终端关联您的 GitHub 仓库：
-    echo   git remote add origin https://github.com/您的用户名/仓库名.git
-    echo   git push -u origin main
+    echo [提示] 推送未成功！
+    echo 可能原因：
+    echo 1. 网络连接 GitHub 超时或波动（可重试或开启网络加速）
+    echo 2. GitHub 尚未完成授权登录
     echo ========================================================
     pause
     exit /b 1

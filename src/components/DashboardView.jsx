@@ -48,8 +48,8 @@ window.DashboardView = function DashboardView({ state, setCurrentView, onQuickAd
         },
         grid: {
           top: 45,
-          left: 45,
-          right: 45,
+          left: typeof window !== "undefined" && window.innerWidth < 640 ? 30 : 45,
+          right: typeof window !== "undefined" && window.innerWidth < 640 ? 30 : 45,
           bottom: 25
         },
         xAxis: {
@@ -119,9 +119,9 @@ window.DashboardView = function DashboardView({ state, setCurrentView, onQuickAd
           formatter: "{b}: ${c} ({d}%)"
         },
         legend: {
-          orient: "vertical",
-          right: "5%",
-          top: "center",
+          orient: typeof window !== "undefined" && window.innerWidth < 640 ? "horizontal" : "vertical",
+          right: typeof window !== "undefined" && window.innerWidth < 640 ? "center" : "5%",
+          top: typeof window !== "undefined" && window.innerWidth < 640 ? "bottom" : "center",
           itemWidth: 10,
           itemHeight: 10,
           textStyle: { color: textColor, fontSize: 11 }
@@ -130,8 +130,8 @@ window.DashboardView = function DashboardView({ state, setCurrentView, onQuickAd
           {
             name: "模型费用分布",
             type: "pie",
-            radius: ["45%", "75%"],
-            center: ["35%", "50%"],
+            radius: typeof window !== "undefined" && window.innerWidth < 640 ? ["38%", "62%"] : ["45%", "75%"],
+            center: typeof window !== "undefined" && window.innerWidth < 640 ? ["50%", "40%"] : ["35%", "50%"],
             avoidLabelOverlap: false,
             itemStyle: {
               borderRadius: 6,
@@ -186,11 +186,11 @@ window.DashboardView = function DashboardView({ state, setCurrentView, onQuickAd
     : "0,20 140,20";
 
   return (
-    <div className="p-8 space-y-8 max-w-7xl mx-auto pb-24">
+    <div className="p-4 sm:p-6 md:p-8 space-y-6 sm:space-y-8 max-w-7xl mx-auto pb-28 md:pb-24">
       {/* 1. Hero Bento Section (Matching uploaded reference image) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
         {/* Left Bento: Asset Overview */}
-        <div className="lg:col-span-3 bg-white dark:bg-slate-900/90 rounded-3xl p-6 border border-slate-200/70 dark:border-slate-800/80 shadow-sm flex flex-col justify-between">
+        <div className="lg:col-span-3 bg-white dark:bg-slate-900/90 rounded-3xl p-5 sm:p-6 border border-slate-200/70 dark:border-slate-800/80 shadow-sm flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">AI ASSETS TOTAL</span>
@@ -226,7 +226,7 @@ window.DashboardView = function DashboardView({ state, setCurrentView, onQuickAd
         </div>
 
         {/* Center Bento: Vibrant Accent Gradient Card */}
-        <div className="lg:col-span-5 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-700 text-white rounded-3xl p-7 shadow-xl shadow-blue-500/20 relative overflow-hidden flex flex-col justify-between">
+        <div className="lg:col-span-5 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-700 text-white rounded-3xl p-5 sm:p-7 shadow-xl shadow-blue-500/20 relative overflow-hidden flex flex-col justify-between">
           {/* Subtle Background Glow */}
           <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
 

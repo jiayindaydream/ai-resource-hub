@@ -1,5 +1,5 @@
 // Sidebar Navigation Component (Dynamic Data Sync & Multi-User Workspace Controls)
-window.Sidebar = function Sidebar({ state, currentView, setCurrentView, isCollapsed, setIsCollapsed, onOpenAbout, onOpenReport }) {
+window.Sidebar = function Sidebar({ state, currentView, setCurrentView, isCollapsed, setIsCollapsed, onOpenAbout, onOpenReport, isMobileOpen, onCloseMobile }) {
   const Icons = window.Icons;
   const [theme, setTheme] = useState(document.documentElement.classList.contains("dark") ? "dark" : "light");
   const [showWorkspaceModal, setShowWorkspaceModal] = useState(false);
@@ -84,30 +84,52 @@ window.Sidebar = function Sidebar({ state, currentView, setCurrentView, isCollap
   ];
 
   return (
-    <aside className={`h-screen sticky top-0 bg-white/95 dark:bg-[#0B0F17]/95 backdrop-blur-xl border-r border-slate-200/80 dark:border-slate-800/80 transition-all duration-300 flex flex-col z-30 select-none ${isCollapsed ? "w-20" : "w-64"}`}>
-      {/* Brand Header */}
-      <div className="h-16 px-5 flex items-center justify-between border-b border-slate-100 dark:border-slate-800/60 shrink-0">
-        <div className="flex items-center gap-3 overflow-hidden cursor-pointer" onClick={() => setCurrentView("dashboard")}>
-          <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-700 flex items-center justify-center text-white shadow-md shadow-blue-500/20 shrink-0">
-            <Icons.Sparkles size={19} />
-          </div>
-          {!isCollapsed && (
-            <div className="truncate">
-              <h1 className="font-bold text-slate-900 dark:text-white text-sm tracking-tight leading-none">AI RESOURCE HUB</h1>
-              <p className="text-[10px] text-blue-600 dark:text-blue-400 font-semibold tracking-wider mt-1 uppercase">AI WORKBENCH</p>
-            </div>
-          )}
-        </div>
+    <>
+      {/* Mobile Drawer Backdrop */}
+      {isMobileOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-40 md:hidden transition-opacity" 
+          onClick={onCloseMobile}
+        />
+      )}
 
-        {/* Collapse Toggle */}
-        <button
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-          title={isCollapsed ? "展开侧边栏" : "收起侧边栏"}
-        >
-          <Icons.ChevronRight size={16} className={`transition-transform duration-200 ${isCollapsed ? "" : "rotate-180"}`} />
-        </button>
-      </div>
+      <aside className={`fixed inset-y-0 left-0 z-50 md:sticky md:top-0 h-screen bg-white/95 dark:bg-[#0B0F17]/95 backdrop-blur-xl border-r border-slate-200/80 dark:border-slate-800/80 transition-all duration-300 flex flex-col select-none ${
+        isMobileOpen ? "translate-x-0 shadow-2xl w-72 max-w-[85vw]" : "-translate-x-full md:translate-x-0"
+      } ${isCollapsed ? "md:w-20" : "md:w-64"}`}>
+        {/* Brand Header */}
+        <div className="h-16 px-5 flex items-center justify-between border-b border-slate-100 dark:border-slate-800/60 shrink-0">
+          <div className="flex items-center gap-3 overflow-hidden cursor-pointer" onClick={() => { setCurrentView("dashboard"); onCloseMobile && onCloseMobile(); }}>
+            <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-700 flex items-center justify-center text-white shadow-md shadow-blue-500/20 shrink-0">
+              <Icons.Sparkles size={19} />
+            </div>
+            {(!isCollapsed || isMobileOpen) && (
+              <div className="truncate">
+                <h1 className="font-bold text-slate-900 dark:text-white text-sm tracking-tight leading-none">AI RESOURCE HUB</h1>
+                <p className="text-[10px] text-blue-600 dark:text-blue-400 font-semibold tracking-wider mt-1 uppercase">AI WORKBENCH</p>
+              </div>
+            )}
+          </div>
+
+          <div className="flex items-center gap-1">
+            {/* Mobile Close Button */}
+            <button
+              onClick={onCloseMobile}
+              className="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors md:hidden"
+              title="关闭菜单"
+            >
+              <Icons.X size={18} />
+            </button>
+
+            {/* Desktop Collapse Toggle */}
+            <button
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="hidden md:flex p-1.5 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              title={isCollapsed ? "展开侧边栏" : "收起侧边栏"}
+            >
+              <Icons.ChevronRight size={16} className={`transition-transform duration-200 ${isCollapsed ? "" : "rotate-180"}`} />
+            </button>
+          </div>
+        </div>
 
       {/* Workspace Status & Action Pill */}
       {!isCollapsed && (
@@ -141,7 +163,7 @@ window.Sidebar = function Sidebar({ state, currentView, setCurrentView, isCollap
               return (
                 <button
                   key={item.id}
-                  onClick={() => setCurrentView(item.id)}
+                  onClick={() => { setCurrentView(item.id); onCloseMobile && onCloseMobile(); }}
                   title={isCollapsed ? item.label : undefined}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-2xl text-xs font-medium transition-all group relative ${
                     active
@@ -285,5 +307,6 @@ window.Sidebar = function Sidebar({ state, currentView, setCurrentView, isCollap
         </div>
       )}
     </aside>
+  </>
   );
 };

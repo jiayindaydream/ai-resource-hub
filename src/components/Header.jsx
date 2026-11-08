@@ -1,5 +1,5 @@
 // Header Component
-window.Header = function Header({ currentView, setCurrentView, dataMode, onOpenSearch, onQuickAdd, onOpenAbout, onOpenReport }) {
+window.Header = function Header({ currentView, setCurrentView, dataMode, onOpenSearch, onQuickAdd, onOpenAbout, onOpenReport, onToggleMobileSidebar }) {
   const Icons = window.Icons;
   const [showAddMenu, setShowAddMenu] = useState(false);
 
@@ -17,17 +17,25 @@ window.Header = function Header({ currentView, setCurrentView, dataMode, onOpenS
   const currentInfo = viewTitles[currentView] || viewTitles["dashboard"];
 
   return (
-    <header className="h-16 px-6 md:px-8 flex items-center justify-between border-b border-slate-200/60 dark:border-slate-800/60 bg-white/70 dark:bg-[#0B0F17]/70 backdrop-blur-md sticky top-0 z-20">
-      {/* Title */}
-      <div className="shrink-0 mr-3">
-        <h2 className="text-base md:text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 whitespace-nowrap">
+    <header className="h-16 px-3.5 sm:px-6 md:px-8 flex items-center justify-between border-b border-slate-200/60 dark:border-slate-800/60 bg-white/70 dark:bg-[#0B0F17]/70 backdrop-blur-md sticky top-0 z-20">
+      {/* Title & Mobile Hamburger Button */}
+      <div className="flex items-center gap-2 min-w-0 mr-2">
+        <button
+          onClick={onToggleMobileSidebar}
+          className="p-1.5 -ml-1 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors md:hidden shrink-0"
+          aria-label="打开侧边导航"
+        >
+          <Icons.Menu size={20} />
+        </button>
+
+        <h2 className="text-sm sm:text-base md:text-lg font-bold text-slate-900 dark:text-white tracking-tight truncate">
           {currentInfo.title}
         </h2>
       </div>
 
       {/* Right Actions: Never wrap into multiple lines */}
-      <div className="flex items-center gap-2 md:gap-2.5 shrink-0 whitespace-nowrap">
-        {/* Report Export Pill */}
+      <div className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 shrink-0 whitespace-nowrap">
+        {/* Report Export Pill (Desktop only) */}
         <button
           onClick={onOpenReport}
           className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/60 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition-all text-xs font-semibold whitespace-nowrap shrink-0"
@@ -40,11 +48,12 @@ window.Header = function Header({ currentView, setCurrentView, dataMode, onOpenS
         {/* Global Search Pill */}
         <button
           onClick={onOpenSearch}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100/80 dark:bg-slate-800/70 border border-slate-200/70 dark:border-slate-700/60 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:border-slate-300 dark:hover:border-slate-600 transition-all text-xs whitespace-nowrap shrink-0"
+          className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-slate-100/80 dark:bg-slate-800/70 border border-slate-200/70 dark:border-slate-700/60 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:border-slate-300 dark:hover:border-slate-600 transition-all text-xs whitespace-nowrap shrink-0"
         >
           <Icons.Search size={14} className="text-slate-400 shrink-0" />
           <span className="hidden xl:inline whitespace-nowrap">全局检索 (Prompts / Repos)...</span>
-          <span className="inline xl:hidden whitespace-nowrap">全局检索...</span>
+          <span className="hidden sm:inline xl:hidden whitespace-nowrap">全局检索...</span>
+          <span className="inline sm:hidden whitespace-nowrap text-[11px]">检索</span>
           <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-400">
             Ctrl+K
           </kbd>
@@ -54,11 +63,11 @@ window.Header = function Header({ currentView, setCurrentView, dataMode, onOpenS
         <div className="relative shrink-0">
           <button
             onClick={() => setShowAddMenu(!showAddMenu)}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs shadow-sm shadow-blue-500/20 transition-all active:scale-95 whitespace-nowrap shrink-0"
+            className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs shadow-sm shadow-blue-500/20 transition-all active:scale-95 whitespace-nowrap shrink-0"
           >
-            <Icons.Plus size={15} className="shrink-0" />
-            <span className="whitespace-nowrap">新建资产</span>
-            <Icons.ChevronDown size={13} className={`shrink-0 transition-transform duration-200 ${showAddMenu ? "rotate-180" : ""}`} />
+            <Icons.Plus size={14} className="shrink-0" />
+            <span className="whitespace-nowrap">新建</span>
+            <Icons.ChevronDown size={12} className={`shrink-0 transition-transform duration-200 ${showAddMenu ? "rotate-180" : ""}`} />
           </button>
 
           {showAddMenu && (

@@ -69,7 +69,7 @@ window.ApiConnectionsView = function ApiConnectionsView({ state }) {
   };
 
   return (
-    <div className="p-8 space-y-6 max-w-7xl mx-auto pb-24">
+    <div className="p-4 sm:p-6 md:p-8 space-y-6 max-w-7xl mx-auto pb-28 md:pb-24">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -338,7 +338,7 @@ window.UsageAnalyticsView = function UsageAnalyticsView({ state }) {
   };
 
   return (
-    <div className="p-8 space-y-6 max-w-7xl mx-auto pb-24">
+    <div className="p-4 sm:p-6 md:p-8 space-y-6 max-w-7xl mx-auto pb-28 md:pb-24">
       {/* Header */}
       <div>
         <h3 className="text-xl font-bold text-slate-900 dark:text-white">Usage Analytics 用量与成本分析</h3>
@@ -445,7 +445,7 @@ window.BudgetsView = function BudgetsView({ state }) {
   const budgetAlertAmount = (stats.monthlyBudget * 0.8).toFixed(2);
 
   return (
-    <div className="p-8 space-y-6 max-w-7xl mx-auto pb-24">
+    <div className="p-4 sm:p-6 md:p-8 space-y-6 max-w-7xl mx-auto pb-28 md:pb-24">
       {/* Header */}
       <div>
         <h3 className="text-xl font-bold text-slate-900 dark:text-white">Budgets 预算与消费防护</h3>

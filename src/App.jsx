@@ -7,6 +7,7 @@ function App() {
     return validViews.includes(hash) ? hash : "dashboard";
   });
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
 
@@ -107,10 +108,12 @@ function App() {
         isCollapsed={isSidebarCollapsed}
         setIsCollapsed={setIsSidebarCollapsed}
         onOpenReport={() => setIsReportOpen(true)}
+        isMobileOpen={isMobileSidebarOpen}
+        onCloseMobile={() => setIsMobileSidebarOpen(false)}
       />
 
       {/* Main Content Pane */}
-      <div className="flex-1 flex flex-col min-w-0 min-h-screen overflow-x-hidden">
+      <div className="flex-1 flex flex-col min-w-0 min-h-screen overflow-x-hidden pb-16 md:pb-0">
         <window.Header
           currentView={currentView}
           setCurrentView={setCurrentView}
@@ -118,12 +121,64 @@ function App() {
           onOpenSearch={() => setIsSearchOpen(true)}
           onQuickAdd={handleQuickAdd}
           onOpenReport={() => setIsReportOpen(true)}
+          onToggleMobileSidebar={() => setIsMobileSidebarOpen(prev => !prev)}
         />
 
         <main className="flex-1 overflow-y-auto">
           {renderView()}
         </main>
       </div>
+
+      {/* Mobile Floating Bottom Navigation Bar */}
+      <nav className="fixed bottom-0 inset-x-0 z-30 md:hidden bg-white/95 dark:bg-[#0B0F17]/95 backdrop-blur-xl border-t border-slate-200/80 dark:border-slate-800/80 px-2 py-1.5 flex items-center justify-around shadow-lg pb-[max(0.5rem,env(safe-area-inset-bottom))]">
+        <button
+          onClick={() => setCurrentView("dashboard")}
+          className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-[10px] transition-colors ${
+            currentView === "dashboard" ? "text-blue-600 dark:text-blue-400 font-bold" : "text-slate-500 dark:text-slate-400 font-medium"
+          }`}
+        >
+          <window.Icons.LayoutDashboard size={19} className={currentView === "dashboard" ? "text-blue-600 dark:text-blue-400" : ""} />
+          <span>看板</span>
+        </button>
+
+        <button
+          onClick={() => setCurrentView("prompts")}
+          className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-[10px] transition-colors ${
+            currentView === "prompts" ? "text-blue-600 dark:text-blue-400 font-bold" : "text-slate-500 dark:text-slate-400 font-medium"
+          }`}
+        >
+          <window.Icons.MessageSquare size={19} className={currentView === "prompts" ? "text-blue-600 dark:text-blue-400" : ""} />
+          <span>Prompts</span>
+        </button>
+
+        <button
+          onClick={() => setCurrentView("workflows")}
+          className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-[10px] transition-colors ${
+            currentView === "workflows" ? "text-blue-600 dark:text-blue-400 font-bold" : "text-slate-500 dark:text-slate-400 font-medium"
+          }`}
+        >
+          <window.Icons.Workflow size={19} className={currentView === "workflows" ? "text-blue-600 dark:text-blue-400" : ""} />
+          <span>工作流</span>
+        </button>
+
+        <button
+          onClick={() => setCurrentView("api-connections")}
+          className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-[10px] transition-colors ${
+            currentView === "api-connections" || currentView === "usage-analytics" || currentView === "budgets" ? "text-blue-600 dark:text-blue-400 font-bold" : "text-slate-500 dark:text-slate-400 font-medium"
+          }`}
+        >
+          <window.Icons.Coins size={19} className={currentView === "api-connections" || currentView === "usage-analytics" || currentView === "budgets" ? "text-blue-600 dark:text-blue-400" : ""} />
+          <span>成本/API</span>
+        </button>
+
+        <button
+          onClick={() => setIsMobileSidebarOpen(true)}
+          className="flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-[10px] font-medium text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
+        >
+          <window.Icons.Menu size={19} />
+          <span>菜单</span>
+        </button>
+      </nav>
 
       {/* Global Search Dialog (Ctrl + K) */}
       <window.GlobalSearchModal

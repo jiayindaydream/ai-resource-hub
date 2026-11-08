@@ -1,4 +1,4 @@
-# Pure ASCII Build Script for AI Resource Hub
+﻿# Pure ASCII Build Script for AI Resource Hub
 $ErrorActionPreference = "Stop"
 
 $srcFiles = @(
